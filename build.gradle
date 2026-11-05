@@ -17,6 +17,12 @@ repositories {
 	mavenCentral()
 }
 
+dependencyManagement {
+    dependencies {
+        dependency 'org.projectlombok:lombok:1.18.34'
+    }
+}
+
 dependencies {
 	// 웹 및 데이터 인프라
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -28,16 +34,31 @@ dependencies {
     implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
 
     // Lombok 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
     
 	// 테스트 라이브러리 정형화
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.jvmArgs += [
+        '--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+        '--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED'
+    ]
 }
