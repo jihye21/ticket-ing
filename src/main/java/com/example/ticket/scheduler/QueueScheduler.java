@@ -16,6 +16,7 @@ public class QueueScheduler {
     // 1초마다 대기열 상위 유저 100명씩 통과
     @Scheduled(fixedDelay = 1000)
     public void processQueueBatch() {
-        ticketQueueService.allowEntry(100);
+        String eventId = "event001";
+        ticketQueueService.allowEntry(eventId, 100);
     }
 }
